@@ -2,16 +2,19 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Suspense } from "react";
 import Navbar from "@/app/components/Navbar";
 
-export default function LoginPage() {
+function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const registered = searchParams.get("registered") === "true";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,6 +51,11 @@ export default function LoginPage() {
           <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
             Login
           </h1>
+          {registered && (
+            <div className="bg-green-50 border border-green-200 text-green-700 rounded p-3 mb-4 text-sm">
+              Registration successful! Please log in with your credentials.
+            </div>
+          )}
           {error && (
             <div className="bg-red-50 border border-red-200 text-red-700 rounded p-3 mb-4 text-sm">
               {error}
@@ -95,5 +103,13 @@ export default function LoginPage() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<><Navbar /><div className="max-w-md mx-auto px-4 py-16"><p className="text-gray-500">Loading...</p></div></>}>
+      <LoginForm />
+    </Suspense>
   );
 }

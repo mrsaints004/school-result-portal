@@ -22,14 +22,12 @@ export default function AdminDashboard() {
       return;
     }
     if (status === "authenticated") {
-      Promise.all([
-        fetch("/api/students").then((r) => r.json()),
-        fetch("/api/results").then((r) => r.json()),
-      ])
-        .then(([students, results]) => {
+      fetch("/api/stats")
+        .then((r) => r.json())
+        .then((data) => {
           setStats({
-            students: Array.isArray(students) ? students.length : 0,
-            results: Array.isArray(results) ? results.length : 0,
+            students: data.students ?? 0,
+            results: data.results ?? 0,
           });
           setLoading(false);
         })

@@ -42,18 +42,17 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        token.role = (user as any).role as string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        token.studentId = (user as any).studentId as string;
+        const u = user as unknown as { role: string; studentId: string };
+        token.role = u.role;
+        token.studentId = u.studentId;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as Record<string, unknown>).id = token.sub;
-        (session.user as Record<string, unknown>).role = token.role;
-        (session.user as Record<string, unknown>).studentId = token.studentId;
+        session.user.id = token.sub ?? "";
+        session.user.role = token.role as "admin" | "student";
+        session.user.studentId = token.studentId;
       }
       return session;
     },

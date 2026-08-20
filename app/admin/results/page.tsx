@@ -114,7 +114,13 @@ export default function ManageResults() {
                     <td className="px-4 py-3">{result.session}</td>
                     <td className="px-4 py-3">{result.term}</td>
                     <td className="px-4 py-3">{result.subjects.length}</td>
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 flex gap-3">
+                      <Link
+                        href={`/admin/results/${result._id}/edit`}
+                        className="text-blue-600 hover:text-blue-800 text-sm"
+                      >
+                        Edit
+                      </Link>
                       <button
                         onClick={() => handleDelete(result._id)}
                         className="text-red-600 hover:text-red-800 text-sm"

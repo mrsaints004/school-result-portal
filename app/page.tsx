@@ -11,7 +11,7 @@ export default function Home() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (studentId.trim()) {
-      router.push(`/results/search?studentId=${studentId.trim()}`);
+      router.push(`/results/search?studentId=${encodeURIComponent(studentId.trim())}`);
     }
   };
 
